@@ -8,6 +8,7 @@ using TasksManager.ViewModels.Responses;
 
 namespace TasksManager.Controllers
 {
+    [Route("api/[controller]")]
     public class TasksController : Controller
     {
         //Get many
