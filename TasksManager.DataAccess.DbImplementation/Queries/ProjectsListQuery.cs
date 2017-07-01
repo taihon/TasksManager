@@ -28,6 +28,8 @@ namespace TasksManager.DataAccess.DbImplementation.Queries
                 query = query.Where(p => p.Name.StartsWith(filter.Name));
             if (filter.OpenTasksCountTo != null)
                 query = query.Where(p => p.OpenTasksCount <= filter.OpenTasksCountTo);
+            if (filter.OpenTasksCountFrom != null)
+                query = query.Where(p => p.OpenTasksCount >= filter.OpenTasksCountFrom);
             return query;
         }
 
