@@ -1,4 +1,8 @@
-﻿namespace TasksManager.ViewModels
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace TasksManager.Entities
 {
     public enum TaskStatus
     {
