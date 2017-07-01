@@ -1,28 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace TasksManager.ViewModels
 {
-    /// <summary>
-    ///     Describes paging and sorting for collection.
-    /// </summary>
     public class ListOptions
     {
-        /// <summary>
-        /// Returns Zerobased.ListOptions for default page size, first page without sorting
-        /// </summary>
-        public static ListOptions GetDefault() { return new ListOptions { Count = CountValue.Default }; }
+        public ListOptions() : this(PageSizeValue.Default) { }
+        public ListOptions(PageSizeValue pageSize) : this(pageSize.AsInt32()) { }
+        public ListOptions(int? pageSize) { PageSize = pageSize; }
 
-        /// <summary>
-        /// Returns Zerobased.ListOptions for first item without sorting
-        /// </summary>
-        public static ListOptions GetFirst() { return new ListOptions { Count = CountValue.First }; }
+        public int? PageSize { get; set; }
 
-        /// <summary>
-        /// Returns Zerobased.ListOptions for all items without sorting
-        /// </summary>
-        public static ListOptions GetNoLimit() { return new ListOptions { Count = CountValue.NoLimit }; }
+        public int Page { get; set; }
 
         /// <summary>
         /// Sorting fields.
@@ -33,54 +23,101 @@ namespace TasksManager.ViewModels
         /// </summary>
         public string Sort { get; set; }
 
-        /// <summary>
-        /// Index of first returned item. Optional, overrides Page property if both have values.
-        /// </summary>
-        public int? Offset { get; set; }
-
-        /// <summary>
-        /// Max items count to return.
-        /// Key values:
-        ///     1. NoLimit - returns all items (form offset)
-        ///     2. Default = 10
-        ///     3. First = 1
-        /// If Count less then 1 - return Default = 10
-        /// </summary>
-        public CountValue Count { get; set; }
-
-        /// <summary>
-        /// Page number to return (1 based). Optional, overrided by Offset property if both have values.
-        /// </summary>
-        public int? Page { get; set; }
-
-        /// <summary>
-        /// Return offset calculated from Offset and Page properties.
-        /// </summary>
-        /// <returns>
-        /// Index of first returned item.
-        /// </returns>
-        public int GetOffset()
+        public IEnumerable<SortDesc> GetSorts()
         {
-            if (Offset != null)
+            if (!string.IsNullOrWhiteSpace(Sort))
             {
-                return Offset.Value;
-            }
-            else if (Page != null)
-            {
-                int? countValue = Count.ToInt32();
-
-                if (countValue != null)
+                foreach (string str in Sort.Split(new[] { ',', ' ', ';' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    return countValue.Value * (Page.Value - 1);
+                    var sd = SortDesc.Parse(str);
+                    yield return sd;
+                }
+            }
+        }
+
+        public IQueryable<T> ApplySort<T>(IQueryable<T> query, string defaultSort = null)
+        {
+            var sortDescEnumerator = GetSorts().GetEnumerator();
+
+            if (sortDescEnumerator.MoveNext())
+            {
+                try
+                {
+                    // extensions from https://gist.github.com/zaverden/c2d611f33f60cbe8234b420d87671c10
+                    IOrderedQueryable<T> orderedQuery = query.OrderBy(sortDescEnumerator.Current.PropertyName, sortDescEnumerator.Current.Desc);
+
+                    while (sortDescEnumerator.MoveNext())
+                    {
+                        orderedQuery = orderedQuery.ThenBy(sortDescEnumerator.Current.PropertyName, sortDescEnumerator.Current.Desc);
+                    }
+
+                    return orderedQuery;
+                }
+                catch (MissingMemberException exc)
+                {
+                    throw new WrongSortPropertyException(sortDescEnumerator.Current.PropertyName, exc);
                 }
             }
 
-            return 0;
+            if (defaultSort != null)
+            {
+                var ds = SortDesc.Parse(defaultSort);
+                IOrderedQueryable<T> orderedQuery = query.OrderBy(ds.PropertyName, ds.Desc);
+                return orderedQuery;
+            }
+
+            return query;
         }
 
-        public override string ToString()
+        public IQueryable<T> ApplyPaging<T>(IQueryable<T> query)
         {
-            return $"{Count} from {GetOffset()} sorted by {Sort}";
+            if (PageSize == null)
+            {
+                return query;
+            }
+
+            int skip = PageSize.Value * (Page - 1);
+
+            if (skip > 0)
+            {
+                query = query.Skip(skip);
+            }
+
+            query = query.Take(PageSize.Value);
+            return query;
+        }
+
+        public int CalculatePagesCount(int itemsCount)
+        {
+            if (itemsCount == 0 || PageSize == null)
+            {
+                return 1;
+            }
+
+            int pageSize = PageSize.Value;
+            int pagesCount = itemsCount / pageSize + (itemsCount % pageSize == 0 ? 0 : 1);
+
+            return pagesCount;
+        }
+    }
+
+    public class SortDesc
+    {
+        public string PropertyName { get; set; }
+
+        public bool Desc { get; set; }
+
+        public static SortDesc Parse(string str)
+        {
+            var sd = new SortDesc { PropertyName = str };
+
+            if (str[0] == '+' || str[0] == '-')
+            {
+                sd.Desc = str[0] == '-';
+                sd.PropertyName = str.Substring(1);
+            }
+
+            return sd;
         }
     }
 
@@ -88,7 +125,7 @@ namespace TasksManager.ViewModels
     /// Predefined values for ListOptions.Count
     /// Allows integer values.
     /// </summary>
-    public enum CountValue
+    public enum PageSizeValue
     {
         NoLimit = -0xAAAA,
         First = 1,
@@ -98,7 +135,7 @@ namespace TasksManager.ViewModels
     /// <summary>
     /// Extensions for enum Zerobased.CountValue
     /// </summary>
-    public static class CountValueExtensions
+    public static class PageSizeValueExtensions
     {
         /// <summary>
         /// Convert Zerobased.CountValue to System.Int32 value.
@@ -108,16 +145,27 @@ namespace TasksManager.ViewModels
         /// Returns <value>Defaul</value> if value less then <value>1</value>.
         /// Returns <value>NULL</value> if <paramref name="topValue"/> is <value>NoLimit</value>.
         /// </returns>
-        public static int? ToInt32(this CountValue topValue)
+        public static int? AsInt32(this PageSizeValue topValue)
         {
             int? value = null;
 
-            if (topValue != CountValue.NoLimit)
+            if (topValue != PageSizeValue.NoLimit)
             {
-                value = (int)(topValue < CountValue.First ? CountValue.Default : topValue);
+                value = (int)(topValue < PageSizeValue.First ? PageSizeValue.Default : topValue);
             }
 
             return value;
         }
+    }
+
+    public class WrongSortPropertyException : Exception
+    {
+        public WrongSortPropertyException(string sortProperty, Exception innerException = null)
+            : base($"Property {sortProperty} does not exists in sorted entity.", innerException)
+        {
+            SortProperty = sortProperty;
+        }
+
+        public string SortProperty { get; }
     }
 }

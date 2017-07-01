@@ -4,6 +4,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
+using TasksManager.DataAccess.Commands;
+using TasksManager.DataAccess.DbImplementation.Queries;
+using TasksManager.DataAccess.Queries;
+using TasksManager.DB;
+using Microsoft.EntityFrameworkCore;
+using TasksManager.DataAccess.DbImplementation.Commands;
 
 namespace TasksManager
 {
@@ -24,6 +30,10 @@ namespace TasksManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<TasksContext>(option=>
+                option.UseSqlServer(Configuration.GetConnectionString("TasksContext"))
+            );
+            RegisterQueriesAndCommands(services);
             // Add framework services.
             services.AddMvc();
 
@@ -44,14 +54,22 @@ namespace TasksManager
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TasksContext context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            context.Database.Migrate();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project management API v1"));
+        }
+
+        private void RegisterQueriesAndCommands(IServiceCollection services)
+        {
+            services
+                .AddScoped<IProjectQuery, ProjectQuery>()
+                .AddScoped<ICreateProjectCommand, CreateProjectCommand>()
+                ;
         }
     }
 }

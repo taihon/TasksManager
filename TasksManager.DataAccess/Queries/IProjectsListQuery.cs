@@ -10,6 +10,6 @@ namespace TasksManager.DataAccess.Queries
 {
     public interface IProjectsListQuery
     {
-        Task<ListResponse<ProjectResponse> RunAsync(ProjectFilter filter, ListOptions options);
+        Task<ListResponse<ProjectResponse>> RunAsync(ProjectFilter filter, ListOptions options);
     }
 }

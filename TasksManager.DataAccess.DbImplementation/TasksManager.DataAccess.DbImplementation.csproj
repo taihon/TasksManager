@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="microsoft.entityframeworkcore" Version="1.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TasksManager.DataAccess\TasksManager.DataAccess.csproj" />
+    <ProjectReference Include="..\TasksManager.DB\TasksManager.DB.csproj" />
+    <ProjectReference Include="..\TasksManager.Entities\TasksManager.Entities.csproj" />
+    <ProjectReference Include="..\TasksManager.ViewModels\TasksManager.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

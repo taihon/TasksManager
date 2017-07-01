@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TasksManager.DataAccess.Commands;
+using TasksManager.DataAccess.Queries;
 using TasksManager.ViewModels;
 using TasksManager.ViewModels.Filters;
 using TasksManager.ViewModels.Requests;
@@ -13,10 +15,11 @@ namespace TasksManager.Controllers
     public class ProjectsController : Controller
     {
         [HttpGet]
-        [ProducesResponseType(200, Type=typeof(ListResponse<ProjectResponse>))]
-        public Task<List<ProjectResponse>> GetProjectsListAsync(ProjectFilter project, ListOptions options)
+        [ProducesResponseType(200, Type = typeof(ListResponse<ProjectResponse>))]
+        public async Task<IActionResult> GetProjectsListAsync(ProjectFilter project, ListOptions options, [FromServices]IProjectsListQuery query)
         {
-            throw new NotImplementedException();
+            var response = await query.RunAsync(project, options);
+            return Ok(response);
         }
 
 
@@ -24,17 +27,21 @@ namespace TasksManager.Controllers
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(ProjectResponse))]
         [ProducesResponseType(404)]
-        public Task<IActionResult> CreateProjectAsync([FromBody] CreateProjectRequest project)
+        public async Task<IActionResult> CreateProjectAsync([FromBody] CreateProjectRequest project, [FromServices]ICreateProjectCommand command)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            ProjectResponse response = await command.ExecuteAsync(project);
+            return Ok(response);
         }
 
         [HttpGet("{projectId}")]
         [ProducesResponseType(200, Type = typeof(ProjectResponse))]
         [ProducesResponseType(404)]
-        public Task<IActionResult> GetProjectAsync(int projectId)
+        public async Task<IActionResult> GetProjectAsync(int projectId, [FromServices] IProjectQuery query)
         {
-            throw new NotImplementedException();
+            ProjectResponse response = await query.RunAsync(projectId);
+            return response == null ? (IActionResult)NotFound() : Ok(response);
         }
 
         [HttpPut("{projectId}")]
