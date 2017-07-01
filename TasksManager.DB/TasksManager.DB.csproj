@@ -1,7 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="microsoft.entityframeworkcore" Version="1.1.2" />
+    <PackageReference Include="microsoft.entityframeworkcore.sqlserver" Version="1.1.2" />
+    <PackageReference Include="microsoft.entityframeworkcore.tools" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TasksManager.Entities\TasksManager.Entities.csproj" />
+  </ItemGroup>
 
 </Project>
