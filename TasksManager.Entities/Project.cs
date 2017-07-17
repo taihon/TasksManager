@@ -17,6 +17,6 @@ namespace TasksManager.Entities
 
         public ICollection<Task> Tasks { get; set; }
         [NotMapped]
-        public int OpenTasksCount { get { return Tasks.Count(t => t.Status != TaskStatus.Completed); } }
+        public int OpenTasksCount { get { return Tasks?.Count(t => t.Status != TaskStatus.Completed)??0; } }
     }
 }

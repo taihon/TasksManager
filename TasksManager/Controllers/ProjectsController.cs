@@ -45,9 +45,14 @@ namespace TasksManager.Controllers
         [ProducesResponseType(200, Type=typeof(ProjectResponse))]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
-        public Task<IActionResult> UpdateProjectAsync(int projectId, [FromBody] UpdateProjectRequest request)
+        public async Task<IActionResult> UpdateProjectAsync(int projectId, [FromBody] UpdateProjectRequest request, [FromServices] IUpdateProjectCommand command)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            ProjectResponse response = await command.ExecuteAsync(projectId, request);
+            return response == null ? (IActionResult) NotFound($"Project with id: {projectId} not found") : Ok(response);
         }
 
         [HttpDelete("{projectId}")]
