@@ -1,15 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
-using TasksManager.DataAccess.Commands;
-using TasksManager.DataAccess.DbImplementation.Queries;
-using TasksManager.DataAccess.Queries;
-using TasksManager.DB;
-using Microsoft.EntityFrameworkCore;
-using TasksManager.DataAccess.DbImplementation.Commands;
+using TasksManager.DataAccess.DbImplementation.Projects;
+using TasksManager.DataAccess.Projects;
+using TasksManager.Db;
 
 namespace TasksManager
 {

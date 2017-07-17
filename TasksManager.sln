@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.3
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksManager", "TasksManager\TasksManager.csproj", "{F95DCCD9-99BF-4A17-B43F-819B5DC40836}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TasksManager", "TasksManager\TasksManager.csproj", "{F95DCCD9-99BF-4A17-B43F-819B5DC40836}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksManager.Entities", "TasksManager.Entities\TasksManager.Entities.csproj", "{8684F64C-E089-4B99-AFA9-A24C1531DD65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TasksManager.Entities", "TasksManager.Entities\TasksManager.Entities.csproj", "{8684F64C-E089-4B99-AFA9-A24C1531DD65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksManager.DB", "TasksManager.DB\TasksManager.DB.csproj", "{5BE60665-3510-4FCB-9F2B-7B045CAA665C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TasksManager.Db", "TasksManager.DB\TasksManager.Db.csproj", "{5BE60665-3510-4FCB-9F2B-7B045CAA665C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksManager.DataAccess", "TasksManager.DataAccess\TasksManager.DataAccess.csproj", "{13903581-0CAD-47C0-8B91-9F3569361633}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TasksManager.DataAccess", "TasksManager.DataAccess\TasksManager.DataAccess.csproj", "{13903581-0CAD-47C0-8B91-9F3569361633}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksManager.ViewModels", "TasksManager.ViewModels\TasksManager.ViewModels.csproj", "{2BADD71B-AF9F-481D-8D75-B28A9DDC3675}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TasksManager.ViewModels", "TasksManager.ViewModels\TasksManager.ViewModels.csproj", "{2BADD71B-AF9F-481D-8D75-B28A9DDC3675}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksManager.DataAccess.DbImplementation", "TasksManager.DataAccess.DbImplementation\TasksManager.DataAccess.DbImplementation.csproj", "{95868099-5129-45B0-8A5E-A3045C413E55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TasksManager.DataAccess.DbImplementation", "TasksManager.DataAccess.DbImplementation\TasksManager.DataAccess.DbImplementation.csproj", "{95868099-5129-45B0-8A5E-A3045C413E55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

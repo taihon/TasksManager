@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace TasksManager.DB.Migrations
+namespace TasksManager.Db.Migrations
 {
     public partial class InitDb : Migration
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using TasksManager.Entities;
 
-namespace TasksManager.DB
+namespace TasksManager.Db
 {
     public class TasksContext : DbContext
     {

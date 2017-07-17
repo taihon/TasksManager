@@ -1,4 +1,4 @@
-﻿namespace TasksManager.ViewModels.Responses
+namespace TasksManager.ViewModels.Projects
 {
     public class ProjectResponse
     {

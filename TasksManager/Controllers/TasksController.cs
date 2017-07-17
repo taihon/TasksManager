@@ -2,9 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using TasksManager.ViewModels;
-using TasksManager.ViewModels.Filters;
-using TasksManager.ViewModels.Requests;
-using TasksManager.ViewModels.Responses;
+using TasksManager.ViewModels.Tasks;
 
 namespace TasksManager.Controllers
 {

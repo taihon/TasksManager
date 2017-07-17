@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 
-namespace TasksManager.ViewModels
+namespace TasksManager.ViewModels.Extensions
 {
+    // ReSharper disable once InconsistentNaming
     public static class IQueryableExtensions
     {
         public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, string ordering, bool desc = false)
@@ -36,7 +35,7 @@ namespace TasksManager.ViewModels
 
             if (property == null)
             {
-                throw new MissingMemberException($"{type.Name}.{ordering}");
+                throw new MissingMemberException($"Property {type.Name}.{ordering} is missing");
             }
 
             var parameter = Expression.Parameter(type, "p");

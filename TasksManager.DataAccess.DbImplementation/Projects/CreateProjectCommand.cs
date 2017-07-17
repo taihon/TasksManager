@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using TasksManager.DataAccess.Commands;
-using TasksManager.DB;
+﻿using System.Threading.Tasks;
+using TasksManager.DataAccess.Projects;
+using TasksManager.Db;
 using TasksManager.Entities;
-using TasksManager.ViewModels.Requests;
-using TasksManager.ViewModels.Responses;
+using TasksManager.ViewModels.Projects;
 
-namespace TasksManager.DataAccess.DbImplementation.Commands
+namespace TasksManager.DataAccess.DbImplementation.Projects
 {
     public class CreateProjectCommand : ICreateProjectCommand
     {
-        private TasksContext context { get; }
+        private TasksContext Context { get; }
         public CreateProjectCommand(TasksContext tasksContext)
         {
-            context = tasksContext;
+            Context = tasksContext;
         }
         public async Task<ProjectResponse> ExecuteAsync(CreateProjectRequest request)
         {
@@ -24,8 +20,8 @@ namespace TasksManager.DataAccess.DbImplementation.Commands
                 Name = request.Name,
                 Description = request.Description
             };
-            await context.Projects.AddAsync(project);
-            await context.SaveChangesAsync();
+            await Context.Projects.AddAsync(project);
+            await Context.SaveChangesAsync();
             return new ProjectResponse
             {
                 Id = project.Id,

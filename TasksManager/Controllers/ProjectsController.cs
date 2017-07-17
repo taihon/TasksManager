@@ -2,12 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TasksManager.DataAccess.Commands;
-using TasksManager.DataAccess.Queries;
+using TasksManager.DataAccess.Projects;
 using TasksManager.ViewModels;
-using TasksManager.ViewModels.Filters;
-using TasksManager.ViewModels.Requests;
-using TasksManager.ViewModels.Responses;
+using TasksManager.ViewModels.Projects;
 
 namespace TasksManager.Controllers
 {

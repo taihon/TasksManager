@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using TasksManager.DataAccess.Queries;
-using TasksManager.DB;
-using TasksManager.ViewModels.Responses;
-using TasksManager.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using TasksManager.DataAccess.Projects;
+using TasksManager.Db;
+using TasksManager.ViewModels.Projects;
 
-namespace TasksManager.DataAccess.DbImplementation.Queries
+namespace TasksManager.DataAccess.DbImplementation.Projects
 {
     public class ProjectQuery : IProjectQuery
     {
-        private TasksContext context { get; }
+        private TasksContext Context { get; }
         public ProjectQuery(TasksContext tasksContext) {
-            context = tasksContext;
+            Context = tasksContext;
         }
 
         public async Task<ProjectResponse> RunAsync(int projectId)
         {
-            ProjectResponse response = await context.Projects
+            ProjectResponse response = await Context.Projects
                 .Select(p => new ProjectResponse
                 {
                     Id = p.Id,

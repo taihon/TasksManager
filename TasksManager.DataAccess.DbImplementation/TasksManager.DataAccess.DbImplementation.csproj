@@ -10,9 +10,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TasksManager.DataAccess\TasksManager.DataAccess.csproj" />
-    <ProjectReference Include="..\TasksManager.DB\TasksManager.DB.csproj" />
+    <ProjectReference Include="..\TasksManager.DB\TasksManager.Db.csproj" />
     <ProjectReference Include="..\TasksManager.Entities\TasksManager.Entities.csproj" />
     <ProjectReference Include="..\TasksManager.ViewModels\TasksManager.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tasks\" />
   </ItemGroup>
 
 </Project>

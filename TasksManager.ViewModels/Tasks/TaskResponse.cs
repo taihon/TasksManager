@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System;
+using TasksManager.ViewModels.Projects;
 
-namespace TasksManager.ViewModels.Responses
+namespace TasksManager.ViewModels.Tasks
 {
     public class TaskResponse
     {

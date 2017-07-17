@@ -1,41 +1,51 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using TasksManager.DataAccess.Queries;
-using TasksManager.DB;
+using Microsoft.EntityFrameworkCore;
+using TasksManager.DataAccess.Projects;
+using TasksManager.Db;
 using TasksManager.ViewModels;
-using TasksManager.ViewModels.Filters;
-using TasksManager.ViewModels.Responses;
+using TasksManager.ViewModels.Projects;
 
-namespace TasksManager.DataAccess.DbImplementation.Queries
+namespace TasksManager.DataAccess.DbImplementation.Projects
 {
     public class ProjectsListQuery:IProjectsListQuery
     {
-        private TasksContext context { get; }
+        private TasksContext Context { get; }
         public ProjectsListQuery(TasksContext tasksContext)
         {
-            context = tasksContext;
+            Context = tasksContext;
         }
 
         private IQueryable<ProjectResponse> ApplyFilter(IQueryable<ProjectResponse> query, ProjectFilter filter)
         {
             if (filter.Id != null)
+            {
                 query = query.Where(p => p.Id == filter.Id);
+            }
+
             if (filter.Name != null)
+            {
                 query = query.Where(p => p.Name.StartsWith(filter.Name));
-            if (filter.OpenTasksCountTo != null)
-                query = query.Where(p => p.OpenTasksCount <= filter.OpenTasksCountTo);
-            if (filter.OpenTasksCountFrom != null)
-                query = query.Where(p => p.OpenTasksCount >= filter.OpenTasksCountFrom);
+            }
+
+            if (filter.OpenTasksCount != null)
+            {
+                if (filter.OpenTasksCount.From != null)
+                {
+                    query = query.Where(p => p.OpenTasksCount >= filter.OpenTasksCount.From);
+                }
+
+                if (filter.OpenTasksCount.To != null)
+                {
+                    query = query.Where(p => p.OpenTasksCount <= filter.OpenTasksCount.To);
+                }
+            }
             return query;
         }
 
         public async Task<ListResponse<ProjectResponse>> RunAsync(ProjectFilter filter, ListOptions options)
         {
-            IQueryable<ProjectResponse> query = context.Projects
+            IQueryable<ProjectResponse> query = Context.Projects
                 .Select(p=>new ProjectResponse
                     {
                         Id = p.Id,
@@ -46,7 +56,12 @@ namespace TasksManager.DataAccess.DbImplementation.Queries
                 );
             query = ApplyFilter(query, filter);
             int totalCount = await query.CountAsync();
-            query = options.ApplySort(query, "-Id");
+            if (options.Sort == null)
+            {
+                options.Sort = "Id";
+            }
+
+            query = options.ApplySort(query);
             query = options.ApplyPaging(query);
             return new ListResponse<ProjectResponse>
             {

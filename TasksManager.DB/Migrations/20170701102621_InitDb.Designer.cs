@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using TasksManager.DB;
+using TasksManager.Db;
 using TasksManager.Entities;
 
-namespace TasksManager.DB.Migrations
+namespace TasksManager.Db.Migrations
 {
     [DbContext(typeof(TasksContext))]
     [Migration("20170701102621_InitDb")]

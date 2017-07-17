@@ -21,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TasksManager.DataAccess.DbImplementation\TasksManager.DataAccess.DbImplementation.csproj" />
     <ProjectReference Include="..\TasksManager.DataAccess\TasksManager.DataAccess.csproj" />
-    <ProjectReference Include="..\TasksManager.DB\TasksManager.DB.csproj" />
+    <ProjectReference Include="..\TasksManager.DB\TasksManager.Db.csproj" />
     <ProjectReference Include="..\TasksManager.ViewModels\TasksManager.ViewModels.csproj" />
   </ItemGroup>
 
