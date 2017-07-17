@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +36,9 @@ namespace TasksManager
             // Add framework services.
             services.AddMvc();
 
+            //add AutoMapper
+            services.AddAutoMapper(typeof(Startup));
+            
             //Add swagger
             services.AddSwaggerGen(
                 c =>
