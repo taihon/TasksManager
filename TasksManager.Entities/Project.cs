@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text;
 
 namespace TasksManager.Entities
@@ -14,6 +16,7 @@ namespace TasksManager.Entities
         public string Description { get; set; }
 
         public ICollection<Task> Tasks { get; set; }
-
+        [NotMapped]
+        public int OpenTasksCount { get { return Tasks.Count(t => t.Status != TaskStatus.Completed); } }
     }
 }
