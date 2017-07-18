@@ -58,9 +58,17 @@ namespace TasksManager.Controllers
         [HttpDelete("{projectId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public Task<IActionResult> DeleteProjectAsync(int projectId)
+        public async Task<IActionResult> DeleteProjectAsync(int projectId, [FromServices]IDeleteProjectCommand command)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await command.ExecuteAsync(projectId);
+                return NoContent();
+            }
+            catch (CannotDeleteProjectWithTasksException exception)
+            {
+                return BadRequest(exception.Message);
+            }
         }
     }
 }

@@ -70,9 +70,10 @@ namespace TasksManager
         {
             services
                 .AddScoped<IProjectQuery, ProjectQuery>()
+                .AddScoped<IProjectsListQuery, ProjectsListQuery>()
                 .AddScoped<ICreateProjectCommand, CreateProjectCommand>()
                 .AddScoped<IUpdateProjectCommand, UpdateProjectCommand>()
-                .AddScoped<IProjectsListQuery,ProjectsListQuery>()
+                .AddScoped<IDeleteProjectCommand, DeleteProjectCommand>()
                 ;
         }
     }
