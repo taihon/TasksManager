@@ -29,10 +29,10 @@ namespace TasksManager.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             ProjectResponse response = await command.ExecuteAsync(project);
-            return Ok(response);
+            return CreatedAtRoute("GetSingleProject", new { projectId = response.Id}, response);
         }
 
-        [HttpGet("{projectId}")]
+        [HttpGet("{projectId}", Name = "GetSingleProject")]
         [ProducesResponseType(200, Type = typeof(ProjectResponse))]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetProjectAsync(int projectId, [FromServices] IProjectQuery query)
