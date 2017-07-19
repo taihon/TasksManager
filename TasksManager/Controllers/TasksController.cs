@@ -34,9 +34,10 @@ namespace TasksManager.Controllers
         [HttpGet("{taskId}", Name = "GetSingleTask")]
         [ProducesResponseType(200, Type = typeof(TaskResponse))]
         [ProducesResponseType(404)]
-        public Task<IActionResult> GetTaskAsync(int taskId)
+        public async Task<IActionResult> GetTaskAsync(int taskId, [FromServices]ITaskQuery query)
         {
-            throw new NotImplementedException();
+            TaskResponse response = await query.RunAsync(taskId);
+            return response == null ? (IActionResult) NotFound($"Task with id {taskId} not found") : Ok(response);
         }
 
         //Update

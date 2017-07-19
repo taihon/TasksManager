@@ -77,6 +77,7 @@ namespace TasksManager
                 .AddScoped<IUpdateProjectCommand, UpdateProjectCommand>()
                 .AddScoped<IDeleteProjectCommand, DeleteProjectCommand>()
                 .AddScoped<ICreateTaskCommand, CreateTaskCommand>()
+                .AddScoped<ITaskQuery, TaskQuery>();
                 ;
         }
     }
