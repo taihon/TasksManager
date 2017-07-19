@@ -23,7 +23,7 @@ namespace TasksManager.Controllers
 
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(ProjectResponse))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> CreateProjectAsync([FromBody] CreateProjectRequest project, [FromServices]ICreateProjectCommand command)
         {
             if (!ModelState.IsValid)
