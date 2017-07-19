@@ -27,7 +27,7 @@ namespace TasksManager.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             TaskResponse createdTask = await command.ExecuteAsync(request);
-            return CreatedAtRoute("GetSingleTask", new {id = createdTask.Id}, createdTask);
+            return CreatedAtRoute("GetSingleTask", new {taskId = createdTask.Id}, createdTask);
         }
 
         //Read

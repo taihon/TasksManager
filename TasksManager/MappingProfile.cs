@@ -15,7 +15,8 @@ namespace TasksManager
         {
             CreateMap<Project, ProjectResponse>();
             CreateMap<UpdateProjectRequest, Project>();
-            CreateMap<CreateTaskRequest, Entities.Task>();
+            CreateMap<CreateTaskRequest, Entities.Task>()
+                .ForMember(dest=>dest.CreateDate, opt=>opt.MapFrom(src=>DateTime.Now));
             CreateMap<Entities.Task,TaskResponse>();
         }
     }
