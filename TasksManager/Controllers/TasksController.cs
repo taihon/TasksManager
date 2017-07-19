@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using TasksManager.DataAccess.Tasks;
 using TasksManager.ViewModels;
 using TasksManager.ViewModels.Tasks;
 
@@ -21,13 +22,16 @@ namespace TasksManager.Controllers
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(TaskResponse))]
         [ProducesResponseType(404)]
-        public Task<IActionResult> CreateTaskAsync([FromBody] CreateTaskRequest request)
+        public async Task<IActionResult> CreateTaskAsync([FromBody] CreateTaskRequest request, [FromServices]ICreateTaskCommand command)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            TaskResponse createdTask = await command.ExecuteAsync(request);
+            return CreatedAtRoute("GetSingleTask", new {id = createdTask.Id}, createdTask);
         }
 
         //Read
-        [HttpGet("{taskId}")]
+        [HttpGet("{taskId}", Name = "GetSingleTask")]
         [ProducesResponseType(200, Type = typeof(TaskResponse))]
         [ProducesResponseType(404)]
         public Task<IActionResult> GetTaskAsync(int taskId)

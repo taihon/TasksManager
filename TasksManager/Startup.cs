@@ -7,7 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using TasksManager.DataAccess.DbImplementation.Projects;
+using TasksManager.DataAccess.DbImplementation.Tasks;
 using TasksManager.DataAccess.Projects;
+using TasksManager.DataAccess.Tasks;
 using TasksManager.Db;
 
 namespace TasksManager
@@ -74,6 +76,7 @@ namespace TasksManager
                 .AddScoped<ICreateProjectCommand, CreateProjectCommand>()
                 .AddScoped<IUpdateProjectCommand, UpdateProjectCommand>()
                 .AddScoped<IDeleteProjectCommand, DeleteProjectCommand>()
+                .AddScoped<ICreateTaskCommand, CreateTaskCommand>()
                 ;
         }
     }
