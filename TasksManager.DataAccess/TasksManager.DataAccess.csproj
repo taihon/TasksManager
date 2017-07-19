@@ -8,8 +8,4 @@
     <ProjectReference Include="..\TasksManager.ViewModels\TasksManager.ViewModels.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Tasks\" />
-  </ItemGroup>
-
 </Project>
