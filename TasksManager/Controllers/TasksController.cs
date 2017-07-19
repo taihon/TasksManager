@@ -13,9 +13,10 @@ namespace TasksManager.Controllers
         //Get many
         [HttpGet]
         [ProducesResponseType(200, Type=typeof(ListResponse<TaskResponse>))]
-        public Task<ListResponse<TaskResponse>> GetTasksListAsync(TaskFilter filter, ListOptions options)
+        public async Task<IActionResult> GetTasksListAsync(TaskFilter filter, ListOptions options, [FromServices]ITasksListQuery query)
         {
-            throw new NotImplementedException();
+            ListResponse<TaskResponse> response = await query.RunAsync(filter, options);
+            return Ok(response);
         }
 
         //Create
