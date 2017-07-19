@@ -20,6 +20,6 @@ namespace TasksManager.ViewModels.Tasks
 
         public string Tag { get; set; }
 
-        public bool HasDueDate { get; set; }
+        public bool? HasDueDate { get; set; }
     }
 }
