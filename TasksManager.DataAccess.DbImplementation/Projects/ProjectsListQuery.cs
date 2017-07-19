@@ -1,19 +1,24 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using TasksManager.DataAccess.Projects;
 using TasksManager.Db;
+using TasksManager.Entities;
 using TasksManager.ViewModels;
 using TasksManager.ViewModels.Projects;
+using AutoMapper.QueryableExtensions;
 
 namespace TasksManager.DataAccess.DbImplementation.Projects
 {
     public class ProjectsListQuery:IProjectsListQuery
     {
         private TasksContext Context { get; }
-        public ProjectsListQuery(TasksContext tasksContext)
+        private IMapper Mapper;
+        public ProjectsListQuery(TasksContext tasksContext, IMapper mapper)
         {
             Context = tasksContext;
+            Mapper = mapper;
         }
 
         private IQueryable<ProjectResponse> ApplyFilter(IQueryable<ProjectResponse> query, ProjectFilter filter)
@@ -45,15 +50,8 @@ namespace TasksManager.DataAccess.DbImplementation.Projects
 
         public async Task<ListResponse<ProjectResponse>> RunAsync(ProjectFilter filter, ListOptions options)
         {
-            IQueryable<ProjectResponse> query = Context.Projects
-                .Select(p=>new ProjectResponse
-                    {
-                        Id = p.Id,
-                        Name = p.Name,
-                        Description = p.Description,
-                        OpenTasksCount = p.Tasks.Count(t => t.Status != Entities.TaskStatus.Completed)
-                    }
-                );
+            IQueryable<ProjectResponse> query = Context.Projects.Include("Tasks")
+                .ProjectTo<ProjectResponse>();
             query = ApplyFilter(query, filter);
             int totalCount = await query.CountAsync();
             if (options.Sort == null)
