@@ -13,12 +13,12 @@ namespace TasksManager.DataAccess.DbImplementation.Projects
 {
     public class ProjectsListQuery:IProjectsListQuery
     {
-        private TasksContext Context { get; }
-        private IMapper Mapper;
+        private TasksContext _context;
+        private IMapper _mapper;
         public ProjectsListQuery(TasksContext tasksContext, IMapper mapper)
         {
-            Context = tasksContext;
-            Mapper = mapper;
+            _context = tasksContext;
+            _mapper = mapper;
         }
 
         private IQueryable<ProjectResponse> ApplyFilter(IQueryable<ProjectResponse> query, ProjectFilter filter)
@@ -50,7 +50,7 @@ namespace TasksManager.DataAccess.DbImplementation.Projects
 
         public async Task<ListResponse<ProjectResponse>> RunAsync(ProjectFilter filter, ListOptions options)
         {
-            IQueryable<ProjectResponse> query = Context.Projects.Include("Tasks")
+            IQueryable<ProjectResponse> query = _context.Projects.Include("Tasks")
                 .ProjectTo<ProjectResponse>();
             query = ApplyFilter(query, filter);
             int totalCount = await query.CountAsync();
