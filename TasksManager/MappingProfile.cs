@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using TasksManager.Entities;
 using TasksManager.ViewModels.Projects;
+using TasksManager.ViewModels.Tasks;
 
 namespace TasksManager
 {
@@ -14,6 +15,8 @@ namespace TasksManager
         {
             CreateMap<Project, ProjectResponse>();
             CreateMap<UpdateProjectRequest, Project>();
+            CreateMap<CreateTaskRequest, Entities.Task>();
+            CreateMap<Entities.Task,TaskResponse>();
         }
     }
 }
