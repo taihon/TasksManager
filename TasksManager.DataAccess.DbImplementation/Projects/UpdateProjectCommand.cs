@@ -13,24 +13,24 @@ namespace TasksManager.DataAccess.DbImplementation.Projects
 {
     public class UpdateProjectCommand:IUpdateProjectCommand
     {
-        private TasksContext Context;
-        private IMapper Mapper;
+        private TasksContext _context;
+        private IMapper _mapper;
         public UpdateProjectCommand(TasksContext tasksContext, IMapper mappper)
         {
-            Context = tasksContext;
-            Mapper = mappper;
+            _context = tasksContext;
+            _mapper = mappper;
         }
         public async Task<ProjectResponse> ExecuteAsync(int projectId, UpdateProjectRequest request)
         {
-            Project foundProject = await Context.Projects.FirstOrDefaultAsync(t => t.Id == projectId);
+            Project foundProject = await _context.Projects.FirstOrDefaultAsync(t => t.Id == projectId);
             if (foundProject != null)
             {
-                Project mappedProject = Mapper.Map<UpdateProjectRequest, Project>(request);
+                Project mappedProject = _mapper.Map<UpdateProjectRequest, Project>(request);
                 mappedProject.Id = projectId;
-                Context.Entry(foundProject).CurrentValues.SetValues(mappedProject);
-                await Context.SaveChangesAsync();
+                _context.Entry(foundProject).CurrentValues.SetValues(mappedProject);
+                await _context.SaveChangesAsync();
             }
-            return Mapper.Map<Project,ProjectResponse>(foundProject);
+            return _mapper.Map<Project,ProjectResponse>(foundProject);
         }
     }
 }

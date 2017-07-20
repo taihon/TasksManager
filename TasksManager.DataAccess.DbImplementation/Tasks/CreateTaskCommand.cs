@@ -8,19 +8,19 @@ namespace TasksManager.DataAccess.DbImplementation.Tasks
 {
     public class CreateTaskCommand : ICreateTaskCommand
     {
-        private TasksContext Context;
-        private IMapper Mapper;
+        private TasksContext _context;
+        private IMapper _mapper;
         public CreateTaskCommand(TasksContext context, IMapper mapper)
         {
-            Context = context;
-            Mapper = mapper;
+            _context = context;
+            _mapper = mapper;
         }
         public async Task<TaskResponse> ExecuteAsync(CreateTaskRequest request)
         {
-            Entities.Task taskToCreate = Mapper.Map<CreateTaskRequest, Entities.Task>(request);
-            await Context.Tasks.AddAsync(taskToCreate);
-            await Context.SaveChangesAsync();
-            return Mapper.Map<Entities.Task, TaskResponse>(taskToCreate);
+            Entities.Task taskToCreate = _mapper.Map<CreateTaskRequest, Entities.Task>(request);
+            await _context.Tasks.AddAsync(taskToCreate);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<Entities.Task, TaskResponse>(taskToCreate);
         }
     }
 }

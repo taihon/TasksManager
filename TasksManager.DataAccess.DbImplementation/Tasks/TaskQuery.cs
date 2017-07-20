@@ -14,18 +14,18 @@ namespace TasksManager.DataAccess.DbImplementation.Tasks
 {
     public class TaskQuery : ITaskQuery
     {
-        private IMapper Mapper;
-        private TasksContext Context;
+        private IMapper _mapper;
+        private TasksContext _context;
         public TaskQuery(TasksContext context, IMapper mapper)
         {
-            Mapper = mapper;
-            Context = context;
+            _mapper = mapper;
+            _context = context;
         }
         public async Task<TaskResponse> RunAsync(int taskId)
         {
-            Entities.Task response = await Context.Tasks.FirstOrDefaultAsync(t => t.Id == taskId);
+            Entities.Task response = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == taskId);
 
-            return Mapper.Map<Entities.Task, TaskResponse>(response);
+            return _mapper.Map<Entities.Task, TaskResponse>(response);
 
         }
     }
