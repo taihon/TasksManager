@@ -54,9 +54,10 @@ namespace TasksManager.Controllers
         [HttpDelete("{taskId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public Task<IActionResult> DeleteTaskAsync(int taskId)
+        public async Task<IActionResult> DeleteTaskAsync(int taskId, [FromServices]IDeleteTaskCommand command)
         {
-            throw new NotImplementedException();
+            await command.ExecuteAsync(taskId);
+            return NoContent();
         }
     }
 }
