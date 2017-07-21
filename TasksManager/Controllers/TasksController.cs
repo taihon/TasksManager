@@ -57,7 +57,7 @@ namespace TasksManager.Controllers
         }
         //Delete
         [HttpDelete("{taskId}")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteTaskAsync(int taskId, [FromServices]IDeleteTaskCommand command)
         {
@@ -73,6 +73,14 @@ namespace TasksManager.Controllers
             TaskResponse response = await command.ExecuteAsync(taskId, tag);
             return response == null?(IActionResult)NotFound($"Task with id {taskId} not found"):Ok(response);
         }
-
+        //remove tag from task
+        [HttpDelete("{taskId}/tags/{tag}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> RemoveTagAsync(int taskId, string tag, [FromServices] IRemoveTagFromTask command)
+        {
+            await command.ExecuteAsync(taskId, tag);
+            return NoContent();
+        }
     }
 }
