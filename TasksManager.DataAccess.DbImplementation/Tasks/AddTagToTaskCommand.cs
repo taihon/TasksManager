@@ -30,11 +30,11 @@ namespace TasksManager.DataAccess.DbImplementation.Tasks
                 .FirstOrDefaultAsync(task => task.Id == taskId);
             if (taskInDb != null && taskInDb.Tags.All(t=>t.Tag.Name!=tag))
             {
-                Tag newTag = await _context.Tags.FirstOrDefaultAsync(t => t.Name == tag);
+                Tag newTag = await _context.Tags.Include("Tasks").FirstOrDefaultAsync(t => t.Name == tag);
                 if (newTag == null)
                 {
                     //такого тега нет в системе, создадим
-                    newTag = new Tag {Name = tag};
+                    newTag = new Tag {Name = tag, Tasks = new List<TagsInTask>()};
                     await _context.Tags.AddAsync(newTag);
                 }
                 TagsInTask tit = new TagsInTask
@@ -42,6 +42,8 @@ namespace TasksManager.DataAccess.DbImplementation.Tasks
                     Task = taskInDb,
                     Tag = newTag
                 };
+                taskInDb.Tags.Add(tit);
+                newTag.Tasks.Add(tit);
                 await _context.TagsInTask.AddAsync(tit);
                 await _context.SaveChangesAsync();
             }
