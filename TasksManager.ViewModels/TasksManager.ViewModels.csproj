@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TasksManager.Entities\TasksManager.Entities.csproj" />
+  </ItemGroup>
+
 </Project>

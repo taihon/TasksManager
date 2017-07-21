@@ -81,6 +81,7 @@ namespace TasksManager
                 .AddScoped<ITasksListQuery,TasksListQuery>()
                 .AddScoped<IDeleteTaskCommand, DeleteTaskCommand>()
                 .AddScoped<IUpdateTaskCommand,UpdateTaskCommand>()
+                .AddScoped<IAddTagToTaskCommand,AddTagToTaskCommand>()
                 ;
         }
     }

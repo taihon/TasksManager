@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TasksManager.Entities;
 using TasksManager.ViewModels.Projects;
 using TasksManager.ViewModels.Tasks;
@@ -16,7 +17,9 @@ namespace TasksManager
             CreateMap<Project, ProjectResponse>();
             CreateMap<UpdateProjectRequest, Project>();
             CreateMap<CreateTaskRequest, Entities.Task>()
-                .ForMember(dest=>dest.CreateDate, opt=>opt.MapFrom(src=>DateTime.Now));
+                .ForMember(dest=>dest.CreateDate, opt=>opt.MapFrom(src=>DateTime.Now))
+                //.ForMember(dest=>dest.Tags,o=>o.MapFrom(src=>src.Tags.ToList()))
+                ;
             //CreateMap<Entities.TaskStatus, ViewModels.TaskStatus>();
             CreateMap<Entities.Task, TaskResponse>()
                 .ForMember(d => d.Tags, o => o.MapFrom(
@@ -25,6 +28,12 @@ namespace TasksManager
             CreateMap<UpdateTaskRequest, Entities.Task>();
             CreateMap<String, Tag>()
                 .ForMember(t => t.Name, opt => opt.MapFrom(src => src));
+            CreateMap<Tag, TagsInTask>();
+            CreateMap<String, TagsInTask>()
+                .ForMember(t => t.Tag, o => o.MapFrom(src => src));
+                ;
+            //CreateMap<TagsInTask, Entities.Task>();
+            //CreateMap<Entities.Task, TagsInTask>();
         }
     }
 }

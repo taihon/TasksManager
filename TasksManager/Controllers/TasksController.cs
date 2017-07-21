@@ -64,5 +64,15 @@ namespace TasksManager.Controllers
             await command.ExecuteAsync(taskId);
             return NoContent();
         }
+        //Add tag to task
+        [HttpPut("{taskId}/tags/{tag}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> AddTagAsync(int taskId, string tag,[FromServices]IAddTagToTaskCommand command)
+        {
+            TaskResponse response = await command.ExecuteAsync(taskId, tag);
+            return response == null?(IActionResult)NotFound($"Task with id {taskId} not found"):Ok(response);
+        }
+
     }
 }
