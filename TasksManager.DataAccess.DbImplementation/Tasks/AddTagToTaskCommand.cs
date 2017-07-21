@@ -28,15 +28,22 @@ namespace TasksManager.DataAccess.DbImplementation.Tasks
             Entities.Task taskInDb = await _context.Tasks.Include(t => t.Tags)
                 .ThenInclude(t => t.Tag)
                 .FirstOrDefaultAsync(task => task.Id == taskId);
-            if (taskInDb != null)
+            if (taskInDb != null && taskInDb.Tags.All(t=>t.Tag.Name!=tag))
             {
-                if (taskInDb.Tags != null && taskInDb.Tags.All(t => t.Tag.Name != tag))
+                Tag newTag = await _context.Tags.FirstOrDefaultAsync(t => t.Name == tag);
+                if (newTag == null)
                 {
-                    TagsInTask tagToCreate = _mapper.Map<String, TagsInTask>(tag);
-                    tagToCreate.Task = taskInDb;
-                    taskInDb.Tags.Add(tagToCreate);
-                    await _context.SaveChangesAsync();
+                    //такого тега нет в системе, создадим
+                    newTag = new Tag {Name = tag};
+                    await _context.Tags.AddAsync(newTag);
                 }
+                TagsInTask tit = new TagsInTask
+                {
+                    Task = taskInDb,
+                    Tag = newTag
+                };
+                await _context.TagsInTask.AddAsync(tit);
+                await _context.SaveChangesAsync();
             }
             return _mapper.Map<Entities.Task, TaskResponse>(taskInDb);
         }
