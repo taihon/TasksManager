@@ -23,7 +23,10 @@ namespace TasksManager.DataAccess.DbImplementation.Tasks
         }
         public async Task<TaskResponse> RunAsync(int taskId)
         {
-            Entities.Task response = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == taskId);
+            Entities.Task response = await _context.Tasks
+                .Include(t=>t.Tags)
+                .ThenInclude(t=>t.Tag)
+                .FirstOrDefaultAsync(t => t.Id == taskId);
 
             return _mapper.Map<Entities.Task, TaskResponse>(response);
 
