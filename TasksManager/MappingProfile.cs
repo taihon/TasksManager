@@ -22,6 +22,9 @@ namespace TasksManager
                 .ForMember(d => d.Tags, o => o.MapFrom(
                     s => s.Tags.Select(tag => tag.Tag.Name).ToArray()))
                 .ForMember(d=>d.Status,s=>s.MapFrom(o=>(ViewModels.TaskStatus)(int)o.Status));
+            CreateMap<UpdateTaskRequest, Entities.Task>();
+            CreateMap<String, Tag>()
+                .ForMember(t => t.Name, opt => opt.MapFrom(src => src));
         }
     }
 }

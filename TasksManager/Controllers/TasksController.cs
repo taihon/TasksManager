@@ -46,9 +46,14 @@ namespace TasksManager.Controllers
         [ProducesResponseType(200, Type = typeof(TaskResponse))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public Task<IActionResult> UpdateTaskAsync(int taskId, [FromBody] UpdateTaskRequest request)
+        public async Task<IActionResult> UpdateTaskAsync(int taskId, [FromBody] UpdateTaskRequest request, [FromServices]IUpdateTaskCommand command)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            TaskResponse response = await command.ExecuteAsync(taskId, request);
+            return response == null ? (IActionResult) NotFound($"Task with id {taskId} not found") : Ok(response);
         }
         //Delete
         [HttpDelete("{taskId}")]
