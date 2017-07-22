@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TasksManager.ViewModels.Tags
 {
-    public class CreateTagRequest
+    public class TagFilter
     {
         public string Name { get; set; }
     }

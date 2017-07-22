@@ -7,8 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using TasksManager.DataAccess.DbImplementation.Projects;
+using TasksManager.DataAccess.DbImplementation.Tags;
 using TasksManager.DataAccess.DbImplementation.Tasks;
 using TasksManager.DataAccess.Projects;
+using TasksManager.DataAccess.Tags;
 using TasksManager.DataAccess.Tasks;
 using TasksManager.Db;
 
@@ -83,6 +85,7 @@ namespace TasksManager
                 .AddScoped<IUpdateTaskCommand,UpdateTaskCommand>()
                 .AddScoped<IAddTagToTaskCommand,AddTagToTaskCommand>()
                 .AddScoped<IRemoveTagFromTask,RemoveTagFromTask>()
+                .AddScoped<ITagsListQuery, TagsListQuery>()
                 ;
         }
     }

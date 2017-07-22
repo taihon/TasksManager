@@ -6,7 +6,9 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TasksManager.Entities;
 using TasksManager.ViewModels.Projects;
+using TasksManager.ViewModels.Tags;
 using TasksManager.ViewModels.Tasks;
+using TaskStatus = TasksManager.Entities.TaskStatus;
 
 namespace TasksManager
 {
@@ -31,9 +33,11 @@ namespace TasksManager
             CreateMap<Tag, TagsInTask>();
             CreateMap<String, TagsInTask>()
                 .ForMember(t => t.Tag, o => o.MapFrom(src => src));
+            CreateMap<Tag, TagResponse>()
+                .ForMember(d => d.OpenTaskCount,
+                    opt => opt.MapFrom(src => src.Tasks.Count(t => t.Task.Status != TaskStatus.Completed)))
+                .ForMember(d => d.TotalTaskCount, o => o.MapFrom(src => src.Tasks.Count))
                 ;
-            //CreateMap<TagsInTask, Entities.Task>();
-            //CreateMap<Entities.Task, TagsInTask>();
         }
     }
 }
