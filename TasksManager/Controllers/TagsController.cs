@@ -21,11 +21,12 @@ namespace TasksManager.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("{tagId}")]
+        [HttpDelete("{tag}")]
         [ProducesResponseType(204)]
-        public async Task<IActionResult> DeleteTagAsync(int tagId)
+        public async Task<IActionResult> DeleteTagAsync(string tag, [FromServices]IDeleteTagCommand command)
         {
-            throw new NotImplementedException();
+            await command.ExecuteAsync(tag);
+            return NoContent();
         }
     }
 }
