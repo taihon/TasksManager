@@ -67,7 +67,11 @@ namespace TasksManager
             context.Database.Migrate();
             app.UseMvc();
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project management API v1"));
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project management API v1");
+                c.RoutePrefix = "api-docs";
+            });
         }
 
         private void RegisterQueriesAndCommands(IServiceCollection services)
@@ -86,6 +90,7 @@ namespace TasksManager
                 .AddScoped<IAddTagToTaskCommand,AddTagToTaskCommand>()
                 .AddScoped<IRemoveTagFromTask,RemoveTagFromTask>()
                 .AddScoped<ITagsListQuery, TagsListQuery>()
+                .AddScoped<IDeleteTagCommand, DeleteTagCommand>()
                 ;
         }
     }
