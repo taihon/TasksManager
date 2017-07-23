@@ -30,7 +30,8 @@ namespace TasksManager.DataAccess.DbImplementation.Tasks
                 {
                     mappedTask.CompleteDate = DateTime.Now;
                 }
-                _context.Entry(foundTask).CurrentValues.SetValues(mappedTask);
+                mappedTask.Id = taskId;
+                foundTask = _mapper.Map(mappedTask,foundTask);
                 await _context.SaveChangesAsync();
             }
             return _mapper.Map<Entities.Task,TaskResponse>(foundTask);

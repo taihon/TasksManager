@@ -32,6 +32,8 @@ namespace TasksManager
                     s => s.Tags.Select(tag => tag.Tag.Name).ToArray()))
                 .ForMember(d=>d.Status,s=>s.MapFrom(o=>(ViewModels.TaskStatus)(int)o.Status));
             CreateMap<UpdateTaskRequest, Entities.Task>();
+            CreateMap<Entities.Task, Entities.Task>()
+                .IgnoreAllPropertiesWithAnInaccessibleSetter();
             //Task mapping to and from
             //Tag mapping to and from
             CreateMap<String, Tag>()

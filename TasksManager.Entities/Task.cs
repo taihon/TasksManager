@@ -15,14 +15,14 @@ namespace TasksManager.Entities
 
         public DateTime? DueDate { get; set; }
 
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; private set; }
 
         public DateTime? CompleteDate { get; set; }
 
         public TaskStatus Status { get; set; }
 
-        public int ProjectId { get; set; }
-        public Project Project { get; set; }
+        public int ProjectId { get; private set; }
+        public Project Project { get; private set; }
 
         public ICollection<TagsInTask> Tags { get; set; }
     }
