@@ -21,7 +21,7 @@ namespace TasksManager.DataAccess.DbImplementation.Projects
         }
         public async Task ExecuteAsync(int projectId)
         {
-            Project projectToDelete = Context.Projects.FirstOrDefault(p => p.Id == projectId);
+            Project projectToDelete = Context.Projects.Include("Tasks").FirstOrDefault(p => p.Id == projectId);
             if (projectToDelete?.Tasks?.Count > 0)
             {
                 throw new CannotDeleteProjectWithTasksException();
