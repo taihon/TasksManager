@@ -10,14 +10,14 @@ namespace TasksManager.DataAccess.DbImplementation.Projects
 {
     public class ProjectQuery : IProjectQuery
     {
-        private TasksContext Context { get; }
+        private TasksContext _context;
         public ProjectQuery(TasksContext tasksContext) {
-            Context = tasksContext;
+            _context = tasksContext;
         }
 
         public async Task<ProjectResponse> RunAsync(int projectId)
         {
-            ProjectResponse response = Context.Projects
+            ProjectResponse response = _context.Projects
                 .ProjectTo<ProjectResponse>()
                 .FirstOrDefault(p => p.Id == projectId);
             return response;
