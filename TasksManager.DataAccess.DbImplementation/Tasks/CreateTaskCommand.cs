@@ -20,6 +20,7 @@ namespace TasksManager.DataAccess.DbImplementation.Tasks
             Entities.Task taskToCreate = _mapper.Map<CreateTaskRequest, Entities.Task>(request);
             await _context.Tasks.AddAsync(taskToCreate);
             await _context.SaveChangesAsync();
+            _context.Entry(taskToCreate).Reference(t => t.Project).Load(); // fixes #1
             return _mapper.Map<Entities.Task, TaskResponse>(taskToCreate);
         }
     }
