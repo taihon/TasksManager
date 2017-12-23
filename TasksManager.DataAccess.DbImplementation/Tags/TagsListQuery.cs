@@ -24,7 +24,7 @@ namespace TasksManager.DataAccess.DbImplementation.Tags
         }
         public async Task<ListResponse<TagResponse>> RunAsync(TagFilter filter, ListOptions options)
         {
-            IQueryable<TagResponse> query = _context.Tags.Include("Tasks").ProjectTo<TagResponse>();
+            IQueryable<TagResponse> query = _context.Tags.ProjectTo<TagResponse>();
             query = ApplyFilter(query, filter);
             int totalCount = await query.CountAsync();
             if (options.Sort == null)
